@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Celebrity Search</title>
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<!--link href="https://fonts.googleapis.com/css?family=Francois+One|Patrick+Hand+SC|Rubik+Mono+One" rel="stylesheet"-->
+	<script src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="background">
+	<span class="span"></span>
+  	<span class="span"></span>
+  	<div class="div"></div>
+  </div>
+	<div class="container" id="main-container">
+		<div class="jumbotron text-center" id="jumbotron-1">
+			<h1>Celebrity GIF Search</h1>
+			<h3>Find trending GIF's of your favorite celebrities!</h3><br>
+			<form class="form-inline" id="search-form">
+		  		<div class="form-group">
+		    		<label for="exampleInputName2">Celebrity Name</label>
+		    		<input type="text" class="form-control" id="search-input" placeholder="Chris Evans">
+		  		</div>
+	 	 		<button type="submit" id="add-person" value="submit" class="btn btn-default">Search</button>
+			</form>
+		</div>
+		<div class="jumbotron" id="jumbotron-2">
+			<div id="celebrity-view">
+				
+			</div>
+			<div id="searches"></div>
+		</div>
+	</div>
+	
+
+<script type="text/javascript"
+ /*src="javascript/app.js"*/>
+
+//initial array of celebrities
+var celebrities = ["Kim Kardashian", "Ryan Gosling", "Honey Boo Boo", "Lady Gaga", "Taylor Lautner", "Nicki Minaj", "Homer Simpson", "Chris Hemsworth", "Brad Pitt", "Katy Perry", "David Beckham", "Rhianna", "Zac Efron", "Donald Trump"];
+
+//function to call celebrity gifs
+function displayCelebrityGif(){
+	var celebrity = $(this).attr("data-person");
+	var apiKey = "ogk2frRp1Sq0tCaxdYyiRw8e0wuRhD9G"
+	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + celebrity + "&api_key=" + apiKey + "&limit=10";
+
+//creates ajax call for specific celebrity being clicked
+$.ajax({
+	url: queryURL, 
+	method: "GET"
+})
+.done(function(response){
+
+	console.log(response)
+	var celebrities = response.data;
+	//create for loop to display the data received
+	for (var j = 0; j < celebrities.length; j++) {
+		
+	//creates a div to hold the celebrity
+	var celebrityDiv = $("<div class='celebrity'>")
+	// retrieves the rating data
+	var rating = celebrities[j].rating;
+	// Make a paragraph tag with jQuery and store it in a variable named p.
+	var p = $("<p>").text("Rating: " + rating);
+	// Set the image's src to still.url.
+	var celebrityStill = celebrities[j].images.fixed_height_still.url;
+	// Set the image's src to animated.url.
+	var celebrityAnimated = celebrities[j].images.fixed_height.url;
+	// Make an image tag with jQuery and store it in a variable.
+	var image = $("<img>");
+		image.attr("src", celebrityStill);
+		image.attr("data-still", celebrityStill);
+		image.attr('data-animated', celebrityAnimated);
+		image.attr('data-state', 'still');
+		image.addClass('searchImage');
+	
+	//creates an element to have the rating displayed
+		celebrityDiv.append(p);
+		celebrityDiv.append(image)
+	
+	//append the celebrityDiv variable to the element with an id of searches
+	$("#searches").append(celebrityDiv);
+	}
+
+});
+};
+
+$(document).on('click', '.searchImage', function(){
+	var state = $(this).attr('data-state');
+	 if (state == "still"){
+	 	$(this).attr('src', $(this).data('animated'));
+	 	$(this).attr('data-state', 'animated');
+	 } else{
+	 	$(this).attr('src', $(this).data('still'));
+	 	$(this).attr('data-state', 'still');	 
+	 }
+})
+//calling renderButton function
+renderButtons();
+//createding function to add the list of celebrities already supplied in my array. 
+function renderButtons(){
+	$("#celebrity-view").empty();
+	for (var i = 0; i < celebrities.length; i++) {
+		console.log(celebrities.length)
+		var a = $("<button class='btn btn-default'>");
+		a.addClass("celebrity");
+		a.attr("data-person", celebrities[i]);
+		a.text(celebrities[i]);
+		$("#celebrity-view").append(a);
+	}
+}
+
+//click function to add celebrities to array of celebrities
+$("#add-person").on("click", function(event){
+	event.preventDefault();
+	var celebrity = $("#search-input").eq(0).val().trim();
+	celebrities.push(celebrity);
+	renderButtons();
+
+});
+//click to call celebrity class and display celebrity function
+ $(document).on("click", ".celebrity", displayCelebrityGif);
+
+</script>
+
+</body>
+</html>
