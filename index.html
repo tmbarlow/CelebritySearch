@@ -5,43 +5,47 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-	<!--link href="https://fonts.googleapis.com/css?family=Francois+One|Patrick+Hand+SC|Rubik+Mono+One" rel="stylesheet"-->
+	<link href="https://fonts.googleapis.com/css?family=Caveat" rel="stylesheet">
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 	<script src="https://code.jquery.com/jquery-3.2.1.js"
-  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-  crossorigin="anonymous"></script>
+	integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+	crossorigin="anonymous"></script>
 </head>
 <body>
 	<div id="background">
-	<span class="span"></span>
-  	<span class="span"></span>
-  	<div class="div"></div>
-  </div>
-	<div class="container" id="main-container">
+		<span class="span"></span>
+		<span class="span"></span>
+		<div class="div"></div>
+	</div>
+	<div class="container " id="main-container">
 		<div class="jumbotron text-center" id="jumbotron-1">
 			<h1>Celebrity GIF Search</h1>
 			<h3>Find trending GIF's of your favorite celebrities!</h3><br>
 			<form class="form-inline" id="search-form">
-		  		<div class="form-group">
-		    		<label for="exampleInputName2">Celebrity Name</label>
-		    		<input type="text" class="form-control" id="search-input" placeholder="Chris Evans">
-		  		</div>
-	 	 		<button type="submit" id="add-person" value="submit" class="btn btn-default">Search</button>
+				<div class="form-group">
+					<label for="exampleInputName2">Celebrity Name</label>
+					<input type="text" class="form-control" id="search-input" placeholder="Chris Evans">
+				</div>
+				<button type="submit" id="add-person" value="submit" class="btn btn-default">Search</button>
 			</form>
 		</div>
 		<div class="jumbotron" id="jumbotron-2">
 			<div id="celebrity-view">
-				
 			</div>
 			<div id="searches"></div>
 		</div>
 	</div>
-	
+	<script type="text/javascript"
+	/*src="javascript/app.js"*/>
+	function main() {
+		$('#background').hide()
+		$('#background').fadeIn(1000)
+	}
 
-<script type="text/javascript"
- /*src="javascript/app.js"*/>
-
+	$(document).ready(main);
 //initial array of celebrities
-var celebrities = ["Kim Kardashian", "Ryan Gosling", "Honey Boo Boo", "Lady Gaga", "Taylor Lautner", "Nicki Minaj", "Homer Simpson", "Chris Hemsworth", "Brad Pitt", "Katy Perry", "David Beckham", "Rhianna", "Zac Efron", "Donald Trump"];
+var celebrities = ["Kim Kardashian", "Ryan Gosling", "Honey Boo Boo", "Lady Gaga", "Taylor Lautner", "Nicki Minaj", "Homer Simpson", "Chris Hemsworth", "Brad Pitt", "Katy Perry", "David Beckham", "Rhianna", "Zac Efron", "Donald Trump", "Taylor Swift", "Chris Farley", "The Rock"];
 
 //function to call celebrity gifs
 function displayCelebrityGif(){
@@ -56,8 +60,10 @@ $.ajax({
 })
 .done(function(response){
 
+	
 	console.log(response)
 	var celebrities = response.data;
+	$("#searches").empty();
 	//create for loop to display the data received
 	for (var j = 0; j < celebrities.length; j++) {
 		
@@ -73,32 +79,32 @@ $.ajax({
 	var celebrityAnimated = celebrities[j].images.fixed_height.url;
 	// Make an image tag with jQuery and store it in a variable.
 	var image = $("<img>");
-		image.attr("src", celebrityStill);
-		image.attr("data-still", celebrityStill);
-		image.attr('data-animated', celebrityAnimated);
-		image.attr('data-state', 'still');
-		image.addClass('searchImage');
+	image.attr("src", celebrityStill);
+	image.attr("data-still", celebrityStill);
+	image.attr('data-animated', celebrityAnimated);
+	image.attr('data-state', 'still');
+	image.addClass('searchImage');
 	
 	//creates an element to have the rating displayed
-		celebrityDiv.append(p);
-		celebrityDiv.append(image)
+	celebrityDiv.append(p);
+	celebrityDiv.append(image)
 	
 	//append the celebrityDiv variable to the element with an id of searches
 	$("#searches").append(celebrityDiv);
-	}
-
+}
 });
 };
 
 $(document).on('click', '.searchImage', function(){
+	
 	var state = $(this).attr('data-state');
-	 if (state == "still"){
-	 	$(this).attr('src', $(this).data('animated'));
-	 	$(this).attr('data-state', 'animated');
-	 } else{
-	 	$(this).attr('src', $(this).data('still'));
-	 	$(this).attr('data-state', 'still');	 
-	 }
+	if (state == "still"){
+		$(this).attr('src', $(this).data('animated'));
+		$(this).attr('data-state', 'animated');
+	} else{
+		$(this).attr('src', $(this).data('still'));
+		$(this).attr('data-state', 'still');	 
+	}
 })
 //calling renderButton function
 renderButtons();
@@ -119,12 +125,23 @@ function renderButtons(){
 $("#add-person").on("click", function(event){
 	event.preventDefault();
 	var celebrity = $("#search-input").eq(0).val().trim();
-	celebrities.push(celebrity);
-	renderButtons();
+	// if (celebrity === "") {
+	// 	return; 
+	// }
+	// if (celebrity !== "") {
+	// 	celebrities.push(celebrity);
+	// 	renderButtons();
+	// }
+	if (celebrity) {
+		celebrities.push(celebrity);
+		renderButtons();
+	}
 
 });
 //click to call celebrity class and display celebrity function
- $(document).on("click", ".celebrity", displayCelebrityGif);
+$(document).on("click", ".celebrity", displayCelebrityGif);
+$('#main-container').hide()
+$('#main-container').fadeIn(3000)
 
 </script>
 

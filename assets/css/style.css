@@ -38,9 +38,22 @@
   box-shadow: 0px -1px 30px 0px rgba(0, 2, 0, 0.61);
 }
 
+h1 {
+  font-family: 'Caveat', cursive;
+}
+
 .btn {
   margin: 3px;
 }
-img {
+
+.celebrity {
   display: inline-block;
+}
+
+img, p {
+margin: 15px;
+}
+
+.jumbotron p {
+    margin-bottom: 0px;
 }
