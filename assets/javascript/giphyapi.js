@@ -1,7 +1,7 @@
 //background fade in
 function main() {
-		$('#background').hide()
-		$('#background').fadeIn(1000)
+	$('#background').hide()
+	$('#background').fadeIn(1000)
 }
 $(document).ready(main);
 
@@ -9,15 +9,16 @@ $(document).ready(main);
 var celebrities = ["Kim Kardashian", "Ryan Gosling", "Honey Boo Boo", "Lady Gaga", "Taylor Lautner", "Nicki Minaj", "Homer Simpson", "Chris Hemsworth", "Brad Pitt", "Katy Perry", "David Beckham", "Rhianna", "Zac Efron", "Donald Trump", "Taylor Swift", "Chris Farley", "The Rock"];
 
 //function to call celebrity gifs
-function displayCelebrityGif(){
-	var celebrity = $(this).attr("data-person");
+function displayCelebrityGif(celeb){
+	var celebrity = celeb;
+	console.log(celebrity)
 	var apiKey = "ogk2frRp1Sq0tCaxdYyiRw8e0wuRhD9G"
 	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + celebrity + "&api_key=" + apiKey + "&limit=10";
 
 	//creates ajax call for specific celebrity being clicked
 	$.ajax({
-	url: queryURL, 
-	method: "GET"
+		url: queryURL, 
+		method: "GET"
 	})
 	.done(function(response){
 
@@ -28,7 +29,7 @@ function displayCelebrityGif(){
 	for (var j = 0; j < celebrities.length; j++) {
 		
 		//creates a div to hold the celebrity
-		var celebrityDiv = $("<div class='celebrity'>")
+		var celebrityDiv = $("<div class=''>")
 		// retrieves the rating data
 		var rating = celebrities[j].rating;
 		// Make a paragraph tag with jQuery and store it in a variable named p.
@@ -44,15 +45,15 @@ function displayCelebrityGif(){
 		image.attr('data-animated', celebrityAnimated);
 		image.attr('data-state', 'still');
 		image.addClass('searchImage');
-	
-		//creates an element to have the rating displayed
+		
+		//creates an element to have the rating displayed<button class="btn btn-default celebrity" data-person="The Rock">The Rock</button>
 		celebrityDiv.append(p);
 		celebrityDiv.append(image)
-	
+		
 		//append the celebrityDiv variable to the element with an id of searches
-		$("#searches").append(celebrityDiv);
-		}
-	});
+		$("#searches").prepend(celebrityDiv);
+	}
+});
 };
 
 $(document).on('click', '.searchImage', function(){
@@ -94,6 +95,8 @@ $("#add-person").on("click", function(event){
 });
 
 //click to call celebrity class and display celebrity function
-$(document).on("click", ".celebrity", displayCelebrityGif);
+$(document).on("click", ".celebrity", function(){
+	var clickedCeleb =  $(this).attr("data-person");
+	displayCelebrityGif(clickedCeleb)});
 $('#main-container').hide()
 $('#main-container').fadeIn(3000)
