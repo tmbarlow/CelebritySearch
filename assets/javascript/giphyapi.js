@@ -57,7 +57,6 @@ function displayCelebrityGif(celeb){
 };
 
 $(document).on('click', '.searchImage', function(){
-	
 	var state = $(this).attr('data-state');
 	if (state == "still"){
 		$(this).attr('src', $(this).data('animated'));
@@ -89,7 +88,6 @@ $("#add-person").on("click", function(event){
 	var celebrity = $("#search-input").val().trim();
 	if (celebrity) {
 		celebrities.push(celebrity);
-		
 	}
 	renderButtons();
 });
