@@ -29,7 +29,7 @@ function displayCelebrityGif(celeb){
 	for (var j = 0; j < celebrities.length; j++) {
 		
 		//creates a div to hold the celebrity
-		var celebrityDiv = $("<div class=''>")
+		var celebrityDiv = $("<div class='column'>")
 		// retrieves the rating data
 		var rating = celebrities[j].rating;
 		// Make a paragraph tag with jQuery and store it in a variable named p.
@@ -97,4 +97,4 @@ $(document).on("click", ".celebrity", function(){
 	var clickedCeleb =  $(this).attr("data-person");
 	displayCelebrityGif(clickedCeleb)});
 $('#main-container').hide()
-$('#main-container').fadeIn(3000)
+$('#main-container').fadeIn(4000)
